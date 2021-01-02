@@ -15,6 +15,19 @@ const formatNumber = num => {
     : num
 }
 
+const displaySize = () => {
+  console.log(display.textContent.length)
+  if (display.textContent.length > 13) {
+    display.style.fontSize = '2.5rem'
+    return
+  }
+  if (display.textContent.length > 8) {
+    display.style.fontSize = '3rem'
+    return
+  }
+  display.style.fontSize = '4rem'
+}
+
 const operations = {
   '/': (first, second) => +first / +second,
   '*': (first, second) => +first * +second,
@@ -34,6 +47,7 @@ const operate = operator => {
   lastOperator = operator
   console.log('Result: ', result)
   display.textContent = formatNumber(result) || '0'
+  displaySize()
 }
 
 operators.forEach(operator => {
@@ -48,6 +62,7 @@ clearBtn.addEventListener('click', () => {
   equation = []
   lastOperator = null
   display.textContent = '0'
+  displaySize()
 })
 
 digits.forEach(digit => {
@@ -67,6 +82,7 @@ digits.forEach(digit => {
     }
     console.log('Input: ', input)
     display.textContent = formatNumber(input)
+    displaySize()
   })
 })
 

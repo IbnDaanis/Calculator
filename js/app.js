@@ -36,7 +36,20 @@ operators.forEach(operator => {
 
 digits.forEach(digit => {
   digit.addEventListener('click', () => {
-    input += digit.value
+    if (digit.value === '.') {
+      if (input.includes('.')) {
+        return
+      } else if (
+        digit.value === '.' &&
+        !input.includes('.') &&
+        input.length > 0
+      ) {
+        input += digit.value
+      }
+    } else {
+      input += digit.value
+    }
+    console.log(input)
   })
 })
 

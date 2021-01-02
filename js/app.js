@@ -5,12 +5,13 @@ const display = document.querySelector('#displayText')
 
 let equation = []
 let result = ''
-let awaitingOperator = false
 let lastOperator = null
 let input = ''
 
 const formatNumber = num => {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+  return num > 1000
+    ? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    : num
 }
 
 const operations = {
@@ -22,17 +23,16 @@ const operations = {
 
 const operate = operator => {
   input && equation.push(input)
-  input = '0'
-  lastOperator = operator
-  awaitingOperator = false
-  console.log('Equation: ', equation)
+  input = ''
+  console.log('Equation: ', equation, 'Last operator: ', lastOperator)
   if (equation.length >= 2) {
-    result = operations[operator](equation[0], equation[1])
+    result = operations[lastOperator](equation[0], equation[1])
     equation = [result]
   }
+  lastOperator = operator
   console.log(result)
   console.log('Input: ', input)
-  display.textContent = formatNumber(result) || input
+  display.textContent = formatNumber(result) || '0'
 }
 
 operators.forEach(operator => {

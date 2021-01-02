@@ -8,6 +8,7 @@ let input = ''
 let result = ''
 let equation = []
 let lastOperator = null
+let awaitingOperator = false
 
 const formatNumber = num => {
   return num > 1000 ? parseFloat(num.toString()).toLocaleString('en') : num
@@ -34,6 +35,7 @@ const operations = {
 }
 
 const operate = operator => {
+  awaitingOperator = false
   input && equation.push(input)
   console.log('Input: ', input)
   input = ''
@@ -65,27 +67,30 @@ clearBtn.addEventListener('click', () => {
 
 digits.forEach(digit => {
   digit.addEventListener('click', () => {
-    if (digit.value === '.') {
-      if (input.includes('.')) {
-        return
-      } else if (
-        digit.value === '.' &&
-        !input.includes('.') &&
-        input.length > 0
-      ) {
+    if (!awaitingOperator) {
+      if (digit.value === '.') {
+        if (input.includes('.')) {
+          return
+        } else if (
+          digit.value === '.' &&
+          !input.includes('.') &&
+          input.length > 0
+        ) {
+          input === '0' ? (input = digit.value) : (input += digit.value)
+        }
+      } else {
         input === '0' ? (input = digit.value) : (input += digit.value)
       }
-    } else {
-      input === '0' ? (input = digit.value) : (input += digit.value)
+      console.log('Input: ', input)
+      display.textContent = formatNumber(input)
+      displaySize()
     }
-    console.log('Input: ', input)
-    display.textContent = formatNumber(input)
-    displaySize()
   })
 })
 
 equals.addEventListener('click', () => {
   lastOperator && operate(lastOperator)
+  awaitingOperator = true
 })
 
 document.addEventListener('keydown', e => {
@@ -108,6 +113,7 @@ document.addEventListener('keydown', e => {
   }
   if (e.key === 'Enter') {
     lastOperator && operate(lastOperator)
+    awaitingOperator = true
   }
   if (e.key === '.') {
     if (input.includes('.')) {

@@ -2,6 +2,7 @@ const digits = document.querySelectorAll('#digit')
 const operators = document.querySelectorAll('#operator')
 const equals = document.querySelector('#equals')
 const display = document.querySelector('#displayText')
+const clearBtn = document.querySelector('#clear')
 
 let equation = []
 let result = ''
@@ -39,6 +40,14 @@ operators.forEach(operator => {
   operator.addEventListener('click', () => {
     operate(operator.value)
   })
+})
+
+clearBtn.addEventListener('click', () => {
+  equation = []
+  result = ''
+  lastOperator = null
+  input = ''
+  display.textContent = '0'
 })
 
 digits.forEach(digit => {

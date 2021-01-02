@@ -64,6 +64,7 @@ clearBtn.addEventListener('click', () => {
   equation = []
   lastOperator = null
   display.textContent = '0'
+  awaitingOperator = false
   displaySize()
 })
 

@@ -35,19 +35,21 @@ const operations = {
 }
 
 const operate = operator => {
-  awaitingOperator = false
-  input && equation.push(input)
-  console.log('Input: ', input)
-  input = ''
-  console.log('Equation: ', equation, 'Last operator: ', lastOperator)
-  if (equation.length >= 2) {
-    result = operations[lastOperator](equation[0], equation[1])
-    equation = [result]
+  if (input || equation) {
+    input && equation.push(input)
+    console.log('Input: ', input)
+    input = ''
+    console.log('Equation: ', equation, 'Last operator: ', lastOperator)
+    if (equation.length >= 2) {
+      result = operations[lastOperator](equation[0], equation[1])
+      equation = [result]
+    }
+    lastOperator = operator
+    console.log('Result: ', result)
+    display.textContent = formatNumber(result) || formatNumber(equation[0])
+    displaySize()
+    awaitingOperator = false
   }
-  lastOperator = operator
-  console.log('Result: ', result)
-  display.textContent = formatNumber(result) || formatNumber(equation[0])
-  displaySize()
 }
 
 operators.forEach(operator => {

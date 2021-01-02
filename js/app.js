@@ -3,6 +3,7 @@ const operators = document.querySelectorAll('#operator')
 const equals = document.querySelector('#equals')
 const display = document.querySelector('#displayText')
 const clearBtn = document.querySelector('#clear')
+const negOrPos = document.querySelector('#negOrPos')
 
 let input = ''
 let result = ''
@@ -66,6 +67,18 @@ clearBtn.addEventListener('click', () => {
   display.textContent = '0'
   awaitingOperator = false
   displaySize()
+})
+
+negOrPos.addEventListener('click', () => {
+  if (!awaitingOperator) {
+    if (+input > 0) {
+      input = `-${input}`
+    } else {
+      input = input.slice(1, input.length)
+    }
+    display.textContent = input
+    console.log(input, display.textContent)
+  }
 })
 
 digits.forEach(digit => {

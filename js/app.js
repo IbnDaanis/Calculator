@@ -10,13 +10,10 @@ let equation = []
 let lastOperator = null
 
 const formatNumber = num => {
-  return num > 1000
-    ? num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    : num
+  return num > 1000 ? parseFloat(num.toString()).toLocaleString('en') : num
 }
 
 const displaySize = () => {
-  console.log(display.textContent.length)
   if (display.textContent.length > 13) {
     display.style.fontSize = '2.3rem'
     return
@@ -47,7 +44,7 @@ const operate = operator => {
   }
   lastOperator = operator
   console.log('Result: ', result)
-  display.textContent = formatNumber(result) || '0'
+  display.textContent = formatNumber(result) || formatNumber(equation[0])
   displaySize()
 }
 
@@ -96,16 +93,29 @@ document.addEventListener('keydown', e => {
   const operatorReg = /[*\/+\-]/g
   let key = e.key.toString()
   let number = key.match(numberReg)
-  // console.log(e.key.toString())
-  console.log(e.key)
   if (number) {
     input === '0' ? (input = number) : (input += number)
+    display.textContent = formatNumber(input)
+  }
+
+  if (e.key.toString().match(operatorReg)) {
+    operate(e.key.toString())
   }
 
   if (e.key === 'Backspace') {
     input = input.slice(0, input.length - 1)
+    display.textContent = formatNumber(input)
   }
-
-  display.textContent = input
+  if (e.key === 'Enter') {
+    lastOperator && operate(lastOperator)
+  }
+  if (e.key === '.') {
+    if (input.includes('.')) {
+      return
+    } else if (!input.includes('.')) {
+      input === '0' ? (input = '0.0') : (input += e.key)
+      display.textContent = input
+    }
+  }
   displaySize()
 })

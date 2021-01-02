@@ -11,20 +11,21 @@ body {
 }
 
 .container {
-  width: 500px;
   margin: 3rem auto;
   border-radius: 10px;
 }
 
 .container .calculator {
-  width: 100%;
+  width: 500px;
   height: 100%;
+  margin: 0 auto;
   border-radius: 10px;
 }
 
 .container .calculator .display {
   width: 100%;
   height: 120px;
+  padding: 1rem;
   background: black;
   border-radius: 10px 10px 0 0;
   display: -webkit-box;
@@ -51,7 +52,6 @@ body {
 .container .calculator .buttons {
   border-radius: 0 0 10px 10px;
   background: black;
-  width: 100%;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (125px)[4];
@@ -65,15 +65,18 @@ body {
 }
 
 .container .calculator .buttons button {
-  height: 100px;
-  width: 100px;
+  height: 110px;
+  width: 110px;
   border-radius: 1000px;
   outline: none;
   border: none;
   background: #333;
   color: #d8d8d8;
-  font-size: 3rem;
+  font-size: 3.3rem;
   font-weight: 300;
+  text-align: center;
+  margin: auto;
+  line-height: 0px;
   cursor: pointer;
   -webkit-transition: -webkit-filter 0.3s ease-in-out;
   transition: -webkit-filter 0.3s ease-in-out;
@@ -94,6 +97,7 @@ body {
 .container .calculator .buttons .top {
   background: #afafaf;
   color: black;
+  font-size: 2.8rem;
 }
 
 .container .calculator .buttons .operator {
@@ -102,7 +106,7 @@ body {
 
 .container .calculator .buttons .zero {
   grid-column: span 2;
-  width: 220px;
+  width: 230px;
   text-align: left;
   padding-left: 2.2rem;
 }

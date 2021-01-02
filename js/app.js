@@ -8,6 +8,11 @@ let result = ''
 let awaitingOperator = false
 let lastOperator = null
 let input = ''
+
+const formatNumber = num => {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
 const operations = {
   '/': (first, second) => +first / +second,
   '*': (first, second) => +first * +second,
@@ -16,16 +21,18 @@ const operations = {
 }
 
 const operate = operator => {
-  equation.push(input)
-  console.log('Equation: ', equation, 'Input: ', input)
-  input = ''
+  input && equation.push(input)
+  input = '0'
   lastOperator = operator
   awaitingOperator = false
+  console.log('Equation: ', equation)
   if (equation.length >= 2) {
     result = operations[operator](equation[0], equation[1])
     equation = [result]
   }
   console.log(result)
+  console.log('Input: ', input)
+  display.textContent = formatNumber(result) || input
 }
 
 operators.forEach(operator => {
@@ -44,12 +51,14 @@ digits.forEach(digit => {
         !input.includes('.') &&
         input.length > 0
       ) {
-        input += digit.value
+        input === '0' ? (input = digit.value) : (input += digit.value)
       }
     } else {
-      input += digit.value
+      input === '0' ? (input = digit.value) : (input += digit.value)
     }
     console.log(input)
+    display.textContent = formatNumber(input)
+    console.log(formatNumber(input))
   })
 })
 

@@ -4,10 +4,10 @@ const equals = document.querySelector('#equals')
 const display = document.querySelector('#displayText')
 const clearBtn = document.querySelector('#clear')
 
-let equation = []
-let result = ''
-let lastOperator = null
 let input = ''
+let result = ''
+let equation = []
+let lastOperator = null
 
 const formatNumber = num => {
   return num > 1000
@@ -24,6 +24,7 @@ const operations = {
 
 const operate = operator => {
   input && equation.push(input)
+  console.log('Input: ', input)
   input = ''
   console.log('Equation: ', equation, 'Last operator: ', lastOperator)
   if (equation.length >= 2) {
@@ -31,8 +32,7 @@ const operate = operator => {
     equation = [result]
   }
   lastOperator = operator
-  console.log(result)
-  console.log('Input: ', input)
+  console.log('Result: ', result)
   display.textContent = formatNumber(result) || '0'
 }
 
@@ -43,10 +43,10 @@ operators.forEach(operator => {
 })
 
 clearBtn.addEventListener('click', () => {
-  equation = []
-  result = ''
-  lastOperator = null
   input = ''
+  result = ''
+  equation = []
+  lastOperator = null
   display.textContent = '0'
 })
 
@@ -65,9 +65,8 @@ digits.forEach(digit => {
     } else {
       input === '0' ? (input = digit.value) : (input += digit.value)
     }
-    console.log(input)
+    console.log('Input: ', input)
     display.textContent = formatNumber(input)
-    console.log(formatNumber(input))
   })
 })
 

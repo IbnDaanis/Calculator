@@ -1,37 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
-  background: #222;
+  background: #ef2d4f;
 }
 
 .container {
   margin: 3rem auto;
   border-radius: 10px;
   .calculator {
-    width: 500px;
+    width: 440px;
     height: 100%;
     margin: 0 auto;
     border-radius: 10px;
-
+    padding: 2rem 0;
     .display {
       width: 100%;
       height: 150px;
       padding: 1rem;
-      background: black;
+      background: white;
       border-radius: 10px 10px 0 0;
       display: flex;
       justify-content: center;
       align-items: center;
       h2 {
         font-size: 4rem;
-        font-weight: 300;
-        color: white;
+        font-weight: 500;
+        color: #ef2d4f;
         text-align: right;
         padding: 1rem;
         height: 100%;
@@ -42,47 +44,62 @@ body {
     }
     .buttons {
       border-radius: 0 0 10px 10px;
-      background: black;
+      background: white;
       display: grid;
-      grid-template-columns: repeat(4, 125px);
-      grid-template-rows: repeat(5, 125px);
+      grid-template-columns: repeat(4, 100px);
+      grid-template-rows: repeat(5, 100px);
       justify-items: center;
+      justify-content: center;
+      padding-bottom: 2rem;
       align-items: center;
       button {
-        height: 110px;
-        width: 110px;
+        height: 85px;
+        width: 85px;
         border-radius: 1000px;
         outline: none;
         border: none;
-        background: #333;
-        color: #d8d8d8;
-        font-size: 3.3rem;
-        font-weight: 300;
+        background: #e6e6e6;
+        color: #333;
+        font-size: 2.6rem;
+        font-weight: 400;
         text-align: center;
         margin: auto;
         line-height: 0px;
         cursor: pointer;
         transition: filter 0.3s ease-in-out;
         &:hover {
-          filter: brightness(1.2);
+          filter: brightness(0.8);
         }
         &:active {
-          filter: brightness(1.5);
+          filter: brightness(0.8);
+          transform: translateY(1px);
         }
       }
       .top {
-        background: #afafaf;
-        color: black;
-        font-size: 2.8rem;
+        background: #333;
+        color: white;
+        font-size: 2rem;
+        &:hover {
+          filter: brightness(1.2);
+        }
+        &:active {
+          filter: brightness(1.2);
+        }
       }
       .operator {
-        background: #ff9500;
+        background: #ef2d4f;
+        &:hover {
+          filter: brightness(1.2);
+        }
+        &:active {
+          filter: brightness(1.2);
+        }
       }
       .zero {
         grid-column: span 2;
-        width: 230px;
+        width: 188px;
         text-align: left;
-        padding-left: 2.2rem;
+        padding-left: 1.8rem;
       }
     }
   }

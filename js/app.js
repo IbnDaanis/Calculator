@@ -99,8 +99,10 @@ document.addEventListener('keydown', e => {
   let key = e.key.toString()
   let number = key.match(numberReg)
   if (number) {
-    input === '0' ? (input = number) : (input += number)
-    display.textContent = formatNumber(input)
+    if (!awaitingOperator) {
+      input === '0' ? (input = number) : (input += number)
+      display.textContent = formatNumber(input)
+    }
   }
 
   if (e.key.toString().match(operatorReg)) {

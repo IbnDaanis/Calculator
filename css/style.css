@@ -20,7 +20,6 @@ body {
   width: 440px;
   height: 100%;
   margin: 0 auto;
-  border-radius: 10px;
   padding: 2rem 0;
 }
 
@@ -29,7 +28,7 @@ body {
   height: 150px;
   padding: 1rem;
   background: white;
-  border-radius: 10px 10px 0 0;
+  border-radius: 15px 15px 0 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -80,7 +79,7 @@ body {
 }
 
 .container .calculator .buttons {
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 15px 15px;
   padding: 1rem 1rem 2rem;
   background: white;
   position: relative;
@@ -101,12 +100,13 @@ body {
 
 .container .calculator .buttons::before {
   content: '';
-  border-top: 3px solid #e6e6e6;
+  border-radius: 100px;
   position: absolute;
   top: 0;
   left: 50%;
-  height: 10px;
-  width: 85%;
+  height: 3px;
+  background: #e6e6e6;
+  width: 86%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
 }

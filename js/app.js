@@ -18,7 +18,7 @@ const formatNumber = num => {
 const displaySize = () => {
   console.log(display.textContent.length)
   if (display.textContent.length > 13) {
-    display.style.fontSize = '2.5rem'
+    display.style.fontSize = '2.3rem'
     return
   }
   if (display.textContent.length > 8) {
@@ -33,6 +33,7 @@ const operations = {
   '*': (first, second) => +first * +second,
   '+': (first, second) => +first + +second,
   '-': (first, second) => +first - +second,
+  '%': (first, second) => +first % +second,
 }
 
 const operate = operator => {
@@ -88,4 +89,23 @@ digits.forEach(digit => {
 
 equals.addEventListener('click', () => {
   lastOperator && operate(lastOperator)
+})
+
+document.addEventListener('keydown', e => {
+  const numberReg = /[\d]/g
+  const operatorReg = /[*\/+\-]/g
+  let key = e.key.toString()
+  let number = key.match(numberReg)
+  // console.log(e.key.toString())
+  console.log(e.key)
+  if (number) {
+    input === '0' ? (input = number) : (input += number)
+  }
+
+  if (e.key === 'Backspace') {
+    input = input.slice(0, input.length - 1)
+  }
+
+  display.textContent = input
+  displaySize()
 })

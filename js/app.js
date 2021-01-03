@@ -48,7 +48,7 @@ const operate = operator => {
     lastOperator = operator
     console.log('Result: ', result)
     display.textContent = formatNumber(result) || formatNumber(equation[0])
-    displaySize()
+
     awaitingOperator = false
   }
 }
@@ -66,7 +66,6 @@ clearBtn.addEventListener('click', () => {
   lastOperator = null
   display.textContent = '0'
   awaitingOperator = false
-  displaySize()
 })
 
 negOrPos.addEventListener('click', () => {
@@ -99,7 +98,6 @@ digits.forEach(digit => {
       }
       console.log('Input: ', input)
       display.textContent = formatNumber(input)
-      displaySize()
     }
   })
 })
@@ -141,5 +139,26 @@ document.addEventListener('keydown', e => {
       display.textContent = input
     }
   }
-  displaySize()
 })
+
+const config = { attributes: true, childList: true, subtree: true }
+
+// Callback function to execute when mutations are observed
+const callback = function (mutationsList, observer) {
+  // Use traditional 'for loops' for IE 11
+  for (const mutation of mutationsList) {
+    if (mutation.type === 'childList') {
+      console.log('A child node has been added or removed.')
+      displaySize()
+    } else if (mutation.type === 'attributes') {
+      console.log('The ' + mutation.attributeName + ' attribute was modified.')
+      displaySize()
+    }
+  }
+}
+
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(callback)
+
+// Start observing the target node for configured mutations
+observer.observe(display, config)

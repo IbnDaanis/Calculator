@@ -118,6 +118,11 @@ document.addEventListener('keydown', e => {
   let key = e.key.toString()
   let number = key.match(numberReg)
   if (number) {
+    if (awaitingOperator) {
+      equation = []
+      result = ''
+      awaitingOperator = false
+    }
     if (!awaitingOperator) {
       input === '0' ? (input = number) : (input += number)
       display.textContent = formatNumber(input)

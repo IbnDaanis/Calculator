@@ -46,17 +46,13 @@ const operate = operator => {
       result = operations[lastOperator](equation[0], equation[1])
       equation = [result]
     }
-    lastOperator = operator
-    display.textContent = formatNumber(result) || formatNumber(equation[0])
+
+    display.textContent = result
+      ? formatNumber(result)
+      : formatNumber(equation[0])
     console.log('Result: ', result)
   }
 }
-
-operators.forEach(operator => {
-  operator.addEventListener('click', () => {
-    input && operate(operator.value)
-  })
-})
 
 clearBtn.addEventListener('click', () => {
   input = ''
@@ -65,14 +61,7 @@ clearBtn.addEventListener('click', () => {
   lastOperator = null
   awaitingOperator = false
   display.textContent = '0'
-
   console.log('-----------Clear-------------')
-  console.log('Input: ', input)
-  console.log('Result: ', result)
-  console.log('Equation: ', equation)
-  console.log('Last Operator: ', lastOperator)
-  console.log('Awaiting Operator: ', awaitingOperator)
-  console.log('Display: ', display.textContent)
 })
 
 negOrPos.addEventListener('click', () => {
@@ -85,6 +74,14 @@ negOrPos.addEventListener('click', () => {
     display.textContent = input
     console.log(input, display.textContent)
   }
+})
+
+operators.forEach(operator => {
+  operator.addEventListener('click', () => {
+    awaitingOperator = false
+    lastOperator = operator
+    input && operate(operator.value)
+  })
 })
 
 digits.forEach(digit => {
@@ -141,6 +138,9 @@ document.addEventListener('keydown', e => {
   }
 
   if (e.key.toString().match(operatorReg)) {
+    awaitingOperator = false
+    lastOperator = e.key.toString()
+    console.log(e.key.toString())
     input && operate(e.key.toString())
   }
   if (e.key === 'Backspace') {

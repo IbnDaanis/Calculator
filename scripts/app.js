@@ -46,6 +46,7 @@ const operate = operator => {
       result = operations[lastOperator](equation[0], equation[1])
       equation = [result]
     }
+    lastOperator = operator
 
     display.textContent = result
       ? formatNumber(result)
@@ -79,7 +80,6 @@ negOrPos.addEventListener('click', () => {
 operators.forEach(operator => {
   operator.addEventListener('click', () => {
     awaitingOperator = false
-    lastOperator = operator
     input && operate(operator.value)
   })
 })
@@ -139,7 +139,6 @@ document.addEventListener('keydown', e => {
 
   if (e.key.toString().match(operatorReg)) {
     awaitingOperator = false
-    lastOperator = e.key.toString()
     console.log(e.key.toString())
     input && operate(e.key.toString())
   }

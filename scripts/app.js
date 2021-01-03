@@ -37,6 +37,7 @@ const operations = {
 
 const operate = operator => {
   if (input || equation) {
+    awaitingOperator = false
     input && equation.push(input)
     console.log('Input: ', input)
     input = ''
@@ -46,16 +47,14 @@ const operate = operator => {
       equation = [result]
     }
     lastOperator = operator
-    console.log('Result: ', result)
     display.textContent = formatNumber(result) || formatNumber(equation[0])
-
-    awaitingOperator = false
+    console.log('Result: ', result)
   }
 }
 
 operators.forEach(operator => {
   operator.addEventListener('click', () => {
-    operate(operator.value)
+    input && operate(operator.value)
   })
 })
 
@@ -64,8 +63,16 @@ clearBtn.addEventListener('click', () => {
   result = ''
   equation = []
   lastOperator = null
-  display.textContent = '0'
   awaitingOperator = false
+  display.textContent = '0'
+
+  console.log('-----------Clear-------------')
+  console.log('Input: ', input)
+  console.log('Result: ', result)
+  console.log('Equation: ', equation)
+  console.log('Last Operator: ', lastOperator)
+  console.log('Awaiting Operator: ', awaitingOperator)
+  console.log('Display: ', display.textContent)
 })
 
 negOrPos.addEventListener('click', () => {
@@ -91,23 +98,26 @@ digits.forEach(digit => {
       if (digit.value === '.') {
         if (input.includes('.')) {
           return
-        } else if (
-          digit.value === '.' &&
-          !input.includes('.') &&
-          input.length > 0
-        ) {
+        } else if (!input.includes('.') && input.length > 0) {
           input === '0' ? (input = digit.value) : (input += digit.value)
         }
       } else {
         input === '0' ? (input = digit.value) : (input += digit.value)
       }
-      console.log('Input: ', input)
+      // console.log('Input: ', input)
       display.textContent = formatNumber(input)
     }
   })
 })
 
 equals.addEventListener('click', () => {
+  // console.log('-----------Equals-------------')
+  // console.log('Input: ', input)
+  // console.log('Result: ', result)
+  // console.log('Equation: ', equation)
+  // console.log('Last Operator: ', lastOperator)
+  // console.log('Awaiting Operator: ', awaitingOperator)
+  // console.log('Display: ', display.textContent)
   lastOperator && operate(lastOperator)
   awaitingOperator = true
 })
@@ -118,6 +128,7 @@ document.addEventListener('keydown', e => {
   let key = e.key.toString()
   let number = key.match(numberReg)
   if (number) {
+    // console.log('Number: ', number)
     if (awaitingOperator) {
       equation = []
       result = ''
@@ -130,17 +141,26 @@ document.addEventListener('keydown', e => {
   }
 
   if (e.key.toString().match(operatorReg)) {
-    operate(e.key.toString())
+    input && operate(e.key.toString())
   }
-
   if (e.key === 'Backspace') {
     input = input.slice(0, input.length - 1)
     display.textContent = formatNumber(input)
   }
+  clearBtn.disabled = true
   if (e.key === 'Enter') {
+    // console.log('-----------Enter-------------')
+    // console.log('Input: ', input)
+    // console.log('Result: ', result)
+    // console.log('Equation: ', equation)
+    // console.log('Last Operator: ', lastOperator)
+    // console.log('Awaiting Operator: ', awaitingOperator)
+    // console.log('Display: ', display.textContent)
+
     lastOperator && operate(lastOperator)
     awaitingOperator = true
   }
+  clearBtn.disabled = false
   if (e.key === '.') {
     if (input.includes('.')) {
       return
@@ -151,10 +171,10 @@ document.addEventListener('keydown', e => {
   }
 })
 
+// When Display changes, fire display font size function
 const config = { attributes: true, childList: true, subtree: true }
-
 // Callback function to execute when mutations are observed
-const callback = function (mutationsList, observer) {
+const callback = function (mutationsList) {
   // Use traditional 'for loops' for IE 11
   for (const mutation of mutationsList) {
     if (mutation.type === 'childList') {
@@ -166,9 +186,7 @@ const callback = function (mutationsList, observer) {
     }
   }
 }
-
 // Create an observer instance linked to the callback function
 const observer = new MutationObserver(callback)
-
 // Start observing the target node for configured mutations
 observer.observe(display, config)

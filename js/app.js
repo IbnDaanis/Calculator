@@ -82,6 +82,11 @@ negOrPos.addEventListener('click', () => {
 
 digits.forEach(digit => {
   digit.addEventListener('click', () => {
+    if (awaitingOperator) {
+      equation = []
+      result = ''
+      awaitingOperator = false
+    }
     if (!awaitingOperator) {
       if (digit.value === '.') {
         if (input.includes('.')) {
@@ -148,10 +153,10 @@ const callback = function (mutationsList, observer) {
   // Use traditional 'for loops' for IE 11
   for (const mutation of mutationsList) {
     if (mutation.type === 'childList') {
-      console.log('A child node has been added or removed.')
+      // console.log('A child node has been added or removed.')
       displaySize()
     } else if (mutation.type === 'attributes') {
-      console.log('The ' + mutation.attributeName + ' attribute was modified.')
+      // console.log('The ' + mutation.attributeName + ' attribute was modified.')
       displaySize()
     }
   }

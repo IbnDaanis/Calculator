@@ -78,6 +78,12 @@ negOrPos.addEventListener('click', () => {
 })
 
 operators.forEach(operator => {
+  digit.onkeydown = e => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      return
+    }
+  }
   operator.addEventListener('click', () => {
     awaitingOperator = false
     input && operate(operator.value)
@@ -85,6 +91,12 @@ operators.forEach(operator => {
 })
 
 digits.forEach(digit => {
+  digit.onkeydown = e => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      return
+    }
+  }
   digit.addEventListener('click', () => {
     if (awaitingOperator) {
       equation = []
@@ -146,7 +158,7 @@ document.addEventListener('keydown', e => {
     input = input.slice(0, input.length - 1)
     display.textContent = formatNumber(input)
   }
-  clearBtn.disabled = true
+  // clearBtn.disabled = true
   if (e.key === 'Enter') {
     // console.log('-----------Enter-------------')
     // console.log('Input: ', input)
@@ -159,7 +171,7 @@ document.addEventListener('keydown', e => {
     lastOperator && operate(lastOperator)
     awaitingOperator = true
   }
-  clearBtn.disabled = false
+  // clearBtn.disabled = false
   if (e.key === '.') {
     if (input.includes('.')) {
       return

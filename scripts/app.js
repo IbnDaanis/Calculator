@@ -37,8 +37,7 @@ const operations = {
 
 const operate = operator => {
   if (input || equation) {
-    awaitingOperator = false
-    input && equation.push(input)
+    equation.push(input)
     console.log('Input: ', input)
     input = ''
     console.log('Equation: ', equation, 'Last operator: ', lastOperator)
@@ -47,11 +46,18 @@ const operate = operator => {
       equation = [result]
     }
     lastOperator = operator
-
-    display.textContent = result
-      ? formatNumber(result)
-      : formatNumber(equation[0])
     console.log('Result: ', result)
+    display.textContent = formatNumber(result) || formatNumber(equation[0])
+    displaySize()
+    awaitingOperator = false
+    console.log(
+      'Result: ',
+      result,
+      'Equation: ',
+      equation,
+      'Last operator',
+      lastOperator
+    )
   }
 }
 
@@ -63,6 +69,13 @@ clearBtn.addEventListener('click', () => {
   awaitingOperator = false
   display.textContent = '0'
   console.log('-----------Clear-------------')
+})
+
+clearBtn.addEventListener('keydown', e => {
+  if (e.keyCode === 13) {
+    e.preventDefault()
+    return
+  }
 })
 
 negOrPos.addEventListener('click', () => {
@@ -77,26 +90,31 @@ negOrPos.addEventListener('click', () => {
   }
 })
 
+negOrPos.addEventListener('keydown', e => {
+  if (e.keyCode === 13) {
+    e.preventDefault()
+    return
+  }
+})
+
 operators.forEach(operator => {
-  digit.onkeydown = e => {
+  operator.addEventListener('click', () => {
+    console.log('Operator button: ', operator.value)
+    awaitingOperator = false
+    input && operate(operator.value)
+    if (result && result === equation[0]) {
+      lastOperator = operator.value
+    }
+  })
+  operator.addEventListener('keydown', e => {
     if (e.keyCode === 13) {
       e.preventDefault()
       return
     }
-  }
-  operator.addEventListener('click', () => {
-    awaitingOperator = false
-    input && operate(operator.value)
   })
 })
 
 digits.forEach(digit => {
-  digit.onkeydown = e => {
-    if (e.keyCode === 13) {
-      e.preventDefault()
-      return
-    }
-  }
   digit.addEventListener('click', () => {
     if (awaitingOperator) {
       equation = []
@@ -117,16 +135,15 @@ digits.forEach(digit => {
       display.textContent = formatNumber(input)
     }
   })
+  digit.addEventListener('keydown', e => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      return
+    }
+  })
 })
 
 equals.addEventListener('click', () => {
-  // console.log('-----------Equals-------------')
-  // console.log('Input: ', input)
-  // console.log('Result: ', result)
-  // console.log('Equation: ', equation)
-  // console.log('Last Operator: ', lastOperator)
-  // console.log('Awaiting Operator: ', awaitingOperator)
-  // console.log('Display: ', display.textContent)
   lastOperator && operate(lastOperator)
   awaitingOperator = true
 })
@@ -137,7 +154,7 @@ document.addEventListener('keydown', e => {
   let key = e.key.toString()
   let number = key.match(numberReg)
   if (number) {
-    // console.log('Number: ', number)
+    console.log('Number: ', number)
     if (awaitingOperator) {
       equation = []
       result = ''
@@ -153,25 +170,18 @@ document.addEventListener('keydown', e => {
     awaitingOperator = false
     console.log(e.key.toString())
     input && operate(e.key.toString())
+    if (result && result === equation[0]) {
+      lastOperator = e.key.toString()
+    }
   }
   if (e.key === 'Backspace') {
     input = input.slice(0, input.length - 1)
     display.textContent = formatNumber(input)
   }
-  // clearBtn.disabled = true
   if (e.key === 'Enter') {
-    // console.log('-----------Enter-------------')
-    // console.log('Input: ', input)
-    // console.log('Result: ', result)
-    // console.log('Equation: ', equation)
-    // console.log('Last Operator: ', lastOperator)
-    // console.log('Awaiting Operator: ', awaitingOperator)
-    // console.log('Display: ', display.textContent)
-
     lastOperator && operate(lastOperator)
     awaitingOperator = true
   }
-  // clearBtn.disabled = false
   if (e.key === '.') {
     if (input.includes('.')) {
       return
@@ -184,20 +194,14 @@ document.addEventListener('keydown', e => {
 
 // When Display changes, fire display font size function
 const config = { attributes: true, childList: true, subtree: true }
-// Callback function to execute when mutations are observed
 const callback = function (mutationsList) {
-  // Use traditional 'for loops' for IE 11
   for (const mutation of mutationsList) {
     if (mutation.type === 'childList') {
-      // console.log('A child node has been added or removed.')
       displaySize()
     } else if (mutation.type === 'attributes') {
-      // console.log('The ' + mutation.attributeName + ' attribute was modified.')
       displaySize()
     }
   }
 }
-// Create an observer instance linked to the callback function
 const observer = new MutationObserver(callback)
-// Start observing the target node for configured mutations
 observer.observe(display, config)

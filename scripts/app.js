@@ -1,5 +1,5 @@
-const digits = document.querySelectorAll('#digit')
-const operators = document.querySelectorAll('#operator')
+const digits = document.querySelectorAll('[data-digit]')
+const operators = document.querySelectorAll('[data-operator]')
 const equals = document.querySelector('#equals')
 const display = document.querySelector('#displayText')
 const clearBtn = document.querySelector('#clear')

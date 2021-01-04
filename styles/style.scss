@@ -126,10 +126,6 @@ body {
           filter: brightness(0.8);
           transform: translateY(1px);
         }
-
-        &:focus {
-          color: red;
-        }
         @media (max-width: 600px) {
           height: 80px;
           width: 80px;

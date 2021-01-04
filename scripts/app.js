@@ -1,9 +1,10 @@
 const digits = document.querySelectorAll('[data-digit]')
 const operators = document.querySelectorAll('[data-operator]')
-const equals = document.querySelector('#equals')
+const equals = document.querySelector('[data-equals]')
+const clearBtn = document.querySelector('[data-clear]')
+const negOrPos = document.querySelector('[data-negOrPos]')
+const percent = document.querySelector('[data-percent]')
 const display = document.querySelector('#displayText')
-const clearBtn = document.querySelector('#clear')
-const negOrPos = document.querySelector('#negOrPos')
 
 let input = ''
 let result = ''
@@ -32,7 +33,6 @@ const operations = {
   '*': (first, second) => +first * +second,
   '+': (first, second) => +first + +second,
   '-': (first, second) => +first - +second,
-  '%': (first, second) => +first % +second,
 }
 
 const operate = operator => {
@@ -91,6 +91,21 @@ negOrPos.addEventListener('click', () => {
 })
 
 negOrPos.addEventListener('keydown', e => {
+  if (e.keyCode === 13) {
+    e.preventDefault()
+    return
+  }
+})
+
+percent.addEventListener('click', () => {
+  if (!awaitingOperator) {
+    input = input / 100
+    display.textContent = input
+    console.log(input, display.textContent)
+  }
+})
+
+percent.addEventListener('keydown', e => {
   if (e.keyCode === 13) {
     e.preventDefault()
     return

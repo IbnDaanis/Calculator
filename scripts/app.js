@@ -12,6 +12,13 @@ let equation = []
 let lastOperator = null
 let awaitingOperator = false
 
+const disableEnterKey = event => {
+  if (event.keyCode === 13) {
+    event.preventDefault()
+    return
+  }
+}
+
 const formatNumber = num => {
   const stringNumber = num.toString()
   const integerDigits = parseFloat(stringNumber.split('.')[0])
@@ -40,7 +47,13 @@ const displaySize = () => {
 }
 
 const operations = {
-  '/': (first, second) => +first / +second,
+  '/': (first, second) => {
+    if (second.toString() === '0') {
+      return
+    } else {
+      return +first / +second
+    }
+  },
   '*': (first, second) => +first * +second,
   '+': (first, second) => +first + +second,
   '-': (first, second) => +first - +second,
@@ -48,18 +61,18 @@ const operations = {
 
 const operate = operator => {
   if (input || equation) {
-    equation.push(input)
+    input && equation.push(input)
     console.log('Input: ', input)
     input = ''
     console.log('Equation: ', equation, 'Last operator: ', lastOperator)
-    if (equation.length >= 2) {
+    if (equation.length >= 2 && equation[1]) {
       result = operations[lastOperator](equation[0], equation[1])
       equation = [result]
+      display.textContent = formatNumber(result)
     }
     lastOperator = operator
     console.log('Result: ', result)
-    display.textContent = formatNumber(result) || formatNumber(equation[0])
-    displaySize()
+    display.textContent = formatNumber(equation[0])
     awaitingOperator = false
     console.log(
       'Result: ',
@@ -83,10 +96,7 @@ clearBtn.addEventListener('click', () => {
 })
 
 clearBtn.addEventListener('keydown', e => {
-  if (e.keyCode === 13) {
-    e.preventDefault()
-    return
-  }
+  disableEnterKey(e)
 })
 
 negOrPos.addEventListener('click', () => {
@@ -102,10 +112,7 @@ negOrPos.addEventListener('click', () => {
 })
 
 negOrPos.addEventListener('keydown', e => {
-  if (e.keyCode === 13) {
-    e.preventDefault()
-    return
-  }
+  disableEnterKey(e)
 })
 
 percent.addEventListener('click', () => {
@@ -117,10 +124,7 @@ percent.addEventListener('click', () => {
 })
 
 percent.addEventListener('keydown', e => {
-  if (e.keyCode === 13) {
-    e.preventDefault()
-    return
-  }
+  disableEnterKey(e)
 })
 
 operators.forEach(operator => {
@@ -133,10 +137,7 @@ operators.forEach(operator => {
     }
   })
   operator.addEventListener('keydown', e => {
-    if (e.keyCode === 13) {
-      e.preventDefault()
-      return
-    }
+    disableEnterKey(e)
   })
 })
 
@@ -162,10 +163,7 @@ digits.forEach(digit => {
     }
   })
   digit.addEventListener('keydown', e => {
-    if (e.keyCode === 13) {
-      e.preventDefault()
-      return
-    }
+    disableEnterKey(e)
   })
 })
 

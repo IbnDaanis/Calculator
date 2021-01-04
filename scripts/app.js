@@ -149,7 +149,9 @@ digits.forEach(digit => {
     if (!awaitingOperator) {
       if (digit.value === '.') {
         if (input.includes('.')) return
-        display.textContent === '0' ? (input = '0.') : (input += '.')
+        display.textContent === '0' || display.textContent === result.toString()
+          ? (input = '0.')
+          : (input += '.')
       } else {
         input === '0' ? (input = digit.value) : (input += digit.value)
       }
@@ -209,7 +211,9 @@ document.addEventListener('keydown', e => {
   }
   if (e.key === '.') {
     if (input.includes('.')) return
-    display.textContent === '0' ? (input = '0.') : (input += '.')
+    display.textContent === '0' || display.textContent === result.toString()
+      ? (input = '0.')
+      : (input += '.')
     display.textContent = formatNumber(input)
   }
 })

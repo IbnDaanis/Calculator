@@ -64,15 +64,13 @@ const operate = operator => {
     input && equation.push(input)
     console.log('Input: ', input)
     input = ''
-    console.log('Equation: ', equation, 'Last operator: ', lastOperator)
     if (equation.length >= 2 && equation[1]) {
       result = operations[lastOperator](equation[0], equation[1])
       equation = [result]
       display.textContent = formatNumber(result)
     }
-    lastOperator = operator
-    console.log('Result: ', result)
     display.textContent = formatNumber(equation[0])
+    lastOperator = operator
     awaitingOperator = false
     console.log(
       'Result: ',
@@ -117,7 +115,7 @@ negOrPos.addEventListener('keydown', e => {
 
 percent.addEventListener('click', () => {
   if (!awaitingOperator) {
-    input = input / 100
+    input = display.textContent / 100
     display.textContent = input
     console.log(input, display.textContent)
   }
@@ -150,15 +148,11 @@ digits.forEach(digit => {
     }
     if (!awaitingOperator) {
       if (digit.value === '.') {
-        if (input.includes('.')) {
-          return
-        } else if (!input.includes('.')) {
-          display.textContent === '0' ? (input = '0.') : (input += digit.value)
-        }
+        if (input.includes('.')) return
+        display.textContent === '0' ? (input = '0.') : (input += '.')
       } else {
         input === '0' ? (input = digit.value) : (input += digit.value)
       }
-      // console.log('Input: ', input)
       display.textContent = formatNumber(input)
     }
   })
@@ -178,7 +172,6 @@ document.addEventListener('keydown', e => {
   let key = e.key.toString()
   let number = key.match(numberReg)
   if (number) {
-    console.log('Number: ', number)
     if (awaitingOperator) {
       equation = []
       result = ''
@@ -189,17 +182,17 @@ document.addEventListener('keydown', e => {
       display.textContent = formatNumber(input)
     }
   }
-  if (e.key.toString().match(operatorReg)) {
+  if (key.match(operatorReg)) {
     awaitingOperator = false
-    console.log(e.key.toString())
-    input && operate(e.key.toString())
+    console.log(key)
+    input && operate(key)
     if (result && result === equation[0]) {
-      lastOperator = e.key.toString()
+      lastOperator = key
     }
   }
   if (e.key === '%') {
     if (!awaitingOperator) {
-      input = input / 100
+      input = display.textContent / 100
       display.textContent = input
       console.log(input, display.textContent)
     }
@@ -213,12 +206,9 @@ document.addEventListener('keydown', e => {
     if (equation.length === 2) awaitingOperator = true
   }
   if (e.key === '.') {
-    if (input.includes('.')) {
-      return
-    } else if (!input.includes('.')) {
-      display.textContent === '0' ? (input = '0.') : (input += '.')
-      display.textContent = formatNumber(input)
-    }
+    if (input.includes('.')) return
+    display.textContent === '0' ? (input = '0.') : (input += '.')
+    display.textContent = formatNumber(input)
   }
 })
 

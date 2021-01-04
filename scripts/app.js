@@ -13,7 +13,18 @@ let lastOperator = null
 let awaitingOperator = false
 
 const formatNumber = num => {
-  return num > 1000 ? parseFloat(num.toString()).toLocaleString('en') : num
+  const stringNumber = num.toString()
+  const integerDigits = parseFloat(stringNumber.split('.')[0])
+  const decimalDigits = stringNumber.split('.')[1]
+  let integerDisplay
+  isNaN(integerDigits)
+    ? (integerDisplay = '')
+    : (integerDisplay = integerDigits.toLocaleString('en', {
+        maximumFractionDigits: 0,
+      }))
+  return decimalDigits != null
+    ? `${integerDisplay}.${decimalDigits}`
+    : `${integerDisplay}`
 }
 
 const displaySize = () => {
@@ -140,8 +151,8 @@ digits.forEach(digit => {
       if (digit.value === '.') {
         if (input.includes('.')) {
           return
-        } else if (!input.includes('.') && input.length > 0) {
-          input === '0' ? (input = digit.value) : (input += digit.value)
+        } else if (!input.includes('.')) {
+          display.textContent === '0' ? (input = '0.') : (input += digit.value)
         }
       } else {
         input === '0' ? (input = digit.value) : (input += digit.value)
@@ -189,8 +200,15 @@ document.addEventListener('keydown', e => {
       lastOperator = e.key.toString()
     }
   }
+  if (e.key === '%') {
+    if (!awaitingOperator) {
+      input = input / 100
+      display.textContent = input
+      console.log(input, display.textContent)
+    }
+  }
   if (e.key === 'Backspace') {
-    input = input.slice(0, input.length - 1)
+    input = input.length === 1 ? '0' : input.toString().slice(0, -1)
     display.textContent = formatNumber(input)
   }
   if (e.key === 'Enter') {
@@ -201,8 +219,8 @@ document.addEventListener('keydown', e => {
     if (input.includes('.')) {
       return
     } else if (!input.includes('.')) {
-      input === '0' ? (input = '0.0') : (input += e.key)
-      display.textContent = input
+      display.textContent === '0' ? (input = '0.') : (input += '.')
+      display.textContent = formatNumber(input)
     }
   }
 })

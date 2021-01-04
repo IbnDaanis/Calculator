@@ -25,7 +25,7 @@ body {
     width: 420px;
     max-width: 95%;
     margin: 0 auto;
-    padding: 2rem 0;
+    padding: calc(0.05 * 100vw) 0;
     @media (max-width: 600px) {
       padding: 2rem 0;
     }

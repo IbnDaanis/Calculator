@@ -167,6 +167,7 @@ equals.addEventListener('click', () => {
 })
 
 document.addEventListener('keydown', e => {
+  if (e.key === 'F12') return
   const numberReg = /[\d]/g
   const operatorReg = /[*\/+\-]/g
   let key = e.key.toString()
@@ -178,6 +179,7 @@ document.addEventListener('keydown', e => {
       awaitingOperator = false
     }
     if (!awaitingOperator) {
+      console.log('Keydown: ', key)
       input === '0' ? (input = number) : (input += number)
       display.textContent = formatNumber(input)
     }

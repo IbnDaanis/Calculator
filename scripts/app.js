@@ -210,7 +210,7 @@ document.addEventListener('keydown', e => {
   }
   if (e.key === 'Enter') {
     lastOperator && operate(lastOperator)
-    awaitingOperator = true
+    if (equation.length === 2) awaitingOperator = true
   }
   if (e.key === '.') {
     if (input.includes('.')) {

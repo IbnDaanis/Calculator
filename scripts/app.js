@@ -169,7 +169,7 @@ digits.forEach(digit => {
 
 equals.addEventListener('click', () => {
   lastOperator && operate(lastOperator)
-  awaitingOperator = true
+  if (equation.length === 2) awaitingOperator = true
 })
 
 document.addEventListener('keydown', e => {
@@ -189,7 +189,6 @@ document.addEventListener('keydown', e => {
       display.textContent = formatNumber(input)
     }
   }
-
   if (e.key.toString().match(operatorReg)) {
     awaitingOperator = false
     console.log(e.key.toString())

@@ -4,63 +4,54 @@ class Calculator {
   private previous: number | string
   private operation: string
 
-  public reset(): void {
+  public reset = (): void => {
     this.display = '0'
     this.current = null
     this.previous = null
     this.operation = null
   }
 
-  public getDisplay(): string {
-    return this.display
-  }
+  public getDisplay = (): string => this.display
 
   public setDisplay(input: string): void {
     console.log('setDisplay', input)
     this.display = input
   }
 
-  public getCurrent(): number | string {
-    return this.current
-  }
+  public getCurrent = (): number | string => this.current
 
   public setCurrent(input: number | string) {
     this.current = input
   }
 
-  public getPrevious(): number | string {
-    return this.previous
-  }
+  public getPrevious = (): number | string => this.previous
 
-  public setPrevious() {
+  public setPrevious = () => {
     this.previous = this.current
   }
 
-  public setOperation(input: string) {
+  public setOperation = (input: string): void => {
     this.operation = input
   }
 
-  public getOperation(): string {
-    return this.operation
-  }
+  public getOperation = (): string => this.operation
 
-  public divide() {
+  public divide = () => {
     this.current = +this.previous / +this.current
     this.previous = null
   }
 
-  public multiply() {
+  public multiply = () => {
     this.current = +this.previous * +this.current
     this.previous = null
   }
 
-  public add() {
+  public add = () => {
     this.current = +this.previous + +this.current
     this.previous = null
-    console.log('Add: ', this.current)
   }
 
-  public subtract() {
+  public subtract = () => {
     this.current = +this.previous - +this.current
     this.previous = null
   }
@@ -71,11 +62,11 @@ const calculator = new Calculator()
 const DOM_EVENTS = (() => {
   const digits: NodeListOf<HTMLButtonElement> = document.querySelectorAll('[data-digit]')
   const operators: NodeListOf<HTMLButtonElement> = document.querySelectorAll('[data-operator]')
-  const equals = document.querySelector('[data-equals]')
-  const clearBtn = document.querySelector('[data-clear]')
-  const negOrPos = document.querySelector('[data-negOrPos]')
-  const percent = document.querySelector('[data-percent]')
-  const displayEl = document.querySelector('#displayText')
+  const equals: HTMLButtonElement = document.querySelector('[data-equals]')
+  const clearBtn: HTMLButtonElement = document.querySelector('[data-clear]')
+  const negOrPos: HTMLButtonElement = document.querySelector('[data-negOrPos]')
+  const percent: HTMLButtonElement = document.querySelector('[data-percent]')
+  const displayEl: HTMLHeadingElement = document.querySelector('#displayText')
 
   let awaitingOperator = true
 

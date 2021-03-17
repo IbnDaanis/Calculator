@@ -1,3 +1,5 @@
+import './styles/style.scss'
+
 class Calculator {
   private display: string = '0'
   private current: number | string

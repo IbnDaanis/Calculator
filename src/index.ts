@@ -1,69 +1,49 @@
 import './styles/style.scss'
 
 class Calculator {
-  private display: string = '0'
-  private current: number | string
-  private previous: number | string
+  private displayNumber: string = '0'
+  private currentNumber: number | string
+  private previousNumber: number | string
   private operation: string
   private awaitingOperator: boolean = true
 
   public reset = (): void => {
-    this.display = '0'
-    this.current = null
-    this.previous = null
+    this.displayNumber = '0'
+    this.currentNumber = null
+    this.previousNumber = null
     this.operation = null
     this.awaitingOperator = true
   }
 
-  public getDisplay = (): string => this.display
+  public getDisplayNumber = (): string => this.displayNumber
 
-  public setDisplay(input: string): void {
-    this.display = input
-  }
+  public setDisplayNumber = (input: string) => (this.displayNumber = input)
 
-  public getCurrent = (): number | string => this.current
+  public getCurrentNumber = (): number | string => this.currentNumber
 
-  public setCurrent(input: number | string) {
-    this.current = input
-  }
+  public setCurrentNumber = (input: number | string) => (this.currentNumber = input)
 
-  public getPrevious = (): number | string => this.previous
+  public getPrevious = (): number | string => this.previousNumber
 
-  public setPrevious = () => {
-    this.previous = this.current
-  }
+  public setPrevious = () => (this.previousNumber = this.currentNumber)
 
-  public setOperation = (input: string): void => {
-    this.operation = input
-  }
+  public resetPrevious = (): void => (this.previousNumber = null)
+
+  public setOperation = (input: string) => (this.operation = input)
 
   public getOperation = (): string => this.operation
 
   public getAwaitingOperator = (): boolean => this.awaitingOperator
 
-  public setAwaitingOperator = (option: boolean): void => {
-    this.awaitingOperator = option
-  }
+  public setAwaitingOperator = (option: boolean) => (this.awaitingOperator = option)
 
-  public divide = () => {
-    this.current = +this.previous / +this.current
-    this.previous = null
-  }
+  public divide = () => (this.currentNumber = +this.previousNumber / +this.currentNumber)
 
-  public multiply = () => {
-    this.current = +this.previous * +this.current
-    this.previous = null
-  }
+  public multiply = () => (this.currentNumber = +this.previousNumber * +this.currentNumber)
 
-  public add = () => {
-    this.current = +this.previous + +this.current
-    this.previous = null
-  }
+  public add = () => (this.currentNumber = +this.previousNumber + +this.currentNumber)
 
-  public subtract = () => {
-    this.current = +this.previous - +this.current
-    this.previous = null
-  }
+  public subtract = () => (this.currentNumber = +this.previousNumber - +this.currentNumber)
 }
 
 const DOM_EVENTS = (() => {
@@ -77,8 +57,23 @@ const DOM_EVENTS = (() => {
 
   const calculator = new Calculator()
 
+  const displaySize = () => {
+    if (displayEl.textContent.length > 12) {
+      displayEl.style.fontSize = '2.2rem'
+      return
+    }
+    if (displayEl.textContent.length > 8) {
+      displayEl.style.fontSize = '3rem'
+      return
+    }
+    displayEl.style.fontSize = '4rem'
+  }
+
   const updateDisplay = (): void => {
-    displayEl.textContent = calculator.getCurrent() ? calculator.getCurrent().toString() : '0'
+    displayEl.textContent = calculator.getCurrentNumber()
+      ? calculator.getCurrentNumber().toString()
+      : '0'
+    displaySize()
   }
 
   const formatDisplay = (input: string): string => {
@@ -86,13 +81,13 @@ const DOM_EVENTS = (() => {
 
     if (calculator.getAwaitingOperator()) {
       value =
-        calculator.getDisplay() === '0'
+        calculator.getDisplayNumber() === '0'
           ? input === '.'
             ? '0.'
             : input
-          : calculator.getDisplay() + input
+          : calculator.getDisplayNumber() + input
     } else {
-      value = calculator.getCurrent() ? calculator.getCurrent() + input : input
+      value = calculator.getCurrentNumber() ? calculator.getCurrentNumber() + input : input
     }
     return value.toString()
   }
@@ -114,17 +109,18 @@ const DOM_EVENTS = (() => {
       default:
         return
     }
+    calculator.resetPrevious()
   }
 
   const numberInput = (input: string): void => {
-    if (input === '.' && calculator.getDisplay().includes('.')) return
+    if (input === '.' && calculator.getDisplayNumber().includes('.')) return
     if (calculator.getAwaitingOperator()) {
-      calculator.setCurrent(formatDisplay(input))
-      calculator.setDisplay(formatDisplay(input))
+      calculator.setCurrentNumber(formatDisplay(input))
+      calculator.setDisplayNumber(formatDisplay(input))
     } else {
-      console.log(calculator.getCurrent())
-      calculator.setCurrent(formatDisplay(input))
-      calculator.setDisplay(calculator.getCurrent().toString())
+      console.log(calculator.getCurrentNumber())
+      calculator.setCurrentNumber(formatDisplay(input))
+      calculator.setDisplayNumber(calculator.getCurrentNumber().toString())
       calculator.setAwaitingOperator(true)
     }
     updateDisplay()
@@ -135,7 +131,7 @@ const DOM_EVENTS = (() => {
     updateDisplay()
     calculator.setOperation(input)
     calculator.setPrevious()
-    calculator.setCurrent(null)
+    calculator.setCurrentNumber(null)
     calculator.setAwaitingOperator(false)
   }
 
@@ -162,12 +158,18 @@ const DOM_EVENTS = (() => {
   })
 
   negOrPos.addEventListener('click', (): void => {
-    calculator.setCurrent(
-      calculator.getCurrent() > 0
-        ? -Math.abs(+calculator.getCurrent())
-        : Math.abs(+calculator.getCurrent())
+    calculator.setCurrentNumber(
+      calculator.getCurrentNumber() > 0
+        ? -Math.abs(+calculator.getCurrentNumber())
+        : Math.abs(+calculator.getCurrentNumber())
     )
-    calculator.setDisplay(calculator.getCurrent().toString())
+    calculator.setDisplayNumber(calculator.getCurrentNumber().toString())
+    updateDisplay()
+  })
+
+  percent.addEventListener('click', (): void => {
+    calculator.setCurrentNumber(+calculator.getCurrentNumber() / 100)
+    calculator.setDisplayNumber(calculator.getCurrentNumber().toString())
     updateDisplay()
   })
 })()

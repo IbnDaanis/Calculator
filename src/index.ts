@@ -1,8 +1,8 @@
 class Calculator {
-  display: string = '0'
-  current: number
-  previous: number
-  operation: string
+  private display: string = '0'
+  private current: number | string
+  private previous: number | string
+  private operation: string
 
   public reset(): void {
     this.display = '0'
@@ -20,15 +20,15 @@ class Calculator {
     this.display = input
   }
 
-  public getCurrent(): number {
+  public getCurrent(): number | string {
     return this.current
   }
 
-  public setCurrent(input: number) {
+  public setCurrent(input: number | string) {
     this.current = input
   }
 
-  public getPrevious(): number {
+  public getPrevious(): number | string {
     return this.previous
   }
 
@@ -38,6 +38,10 @@ class Calculator {
 
   public setOperation(input: string) {
     this.operation = input
+  }
+
+  public getOperation(): string {
+    return this.operation
   }
 
   public divide() {
@@ -82,7 +86,12 @@ const DOM_EVENTS = (() => {
   const formatDisplay = (input: string): string => {
     let value: string
     if (awaitingOperator) {
-      value = calculator.getDisplay() === '0' ? input : calculator.getDisplay() + input
+      value =
+        calculator.getDisplay() === '0'
+          ? input === '.'
+            ? '0.'
+            : input
+          : calculator.getDisplay() + input
     } else {
       value = calculator.getCurrent() ? calculator.getCurrent() + input : input
     }
@@ -91,7 +100,7 @@ const DOM_EVENTS = (() => {
   }
 
   const calculate = (): void => {
-    switch (calculator.operation) {
+    switch (calculator.getOperation()) {
       case '/':
         calculator.divide()
         break
@@ -111,18 +120,18 @@ const DOM_EVENTS = (() => {
 
   digits.forEach(digit => {
     digit.addEventListener('click', () => {
+      console.log('Numbers', calculator.getCurrent(), calculator.getPrevious())
+      if (digit.value === '.' && calculator.getDisplay().includes('.')) return
       if (awaitingOperator) {
-        calculator.setCurrent(+formatDisplay(digit.value))
+        calculator.setCurrent(formatDisplay(digit.value))
         calculator.setDisplay(formatDisplay(digit.value))
       } else {
         console.log(calculator.getCurrent())
-        calculator.setCurrent(+formatDisplay(digit.value))
+        calculator.setCurrent(formatDisplay(digit.value))
         calculator.setDisplay(calculator.getCurrent().toString())
         awaitingOperator = true
       }
       updateDisplay()
-
-      console.log('Numbers', calculator.getCurrent(), calculator.getPrevious())
     })
   })
 

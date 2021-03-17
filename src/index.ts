@@ -3,12 +3,14 @@ class Calculator {
   private current: number | string
   private previous: number | string
   private operation: string
+  private awaitingOperator: boolean = true
 
   public reset = (): void => {
     this.display = '0'
     this.current = null
     this.previous = null
     this.operation = null
+    this.awaitingOperator = true
   }
 
   public getDisplay = (): string => this.display
@@ -35,6 +37,12 @@ class Calculator {
 
   public getOperation = (): string => this.operation
 
+  public getAwaitingOperator = (): boolean => this.awaitingOperator
+
+  public setAwaitingOperator = (option: boolean): void => {
+    this.awaitingOperator = option
+  }
+
   public divide = () => {
     this.current = +this.previous / +this.current
     this.previous = null
@@ -56,8 +64,6 @@ class Calculator {
   }
 }
 
-const calculator = new Calculator()
-
 const DOM_EVENTS = (() => {
   const digits: NodeListOf<HTMLButtonElement> = document.querySelectorAll('[data-digit]')
   const operators: NodeListOf<HTMLButtonElement> = document.querySelectorAll('[data-operator]')
@@ -67,7 +73,7 @@ const DOM_EVENTS = (() => {
   const percent: HTMLButtonElement = document.querySelector('[data-percent]')
   const displayEl: HTMLHeadingElement = document.querySelector('#displayText')
 
-  let awaitingOperator = true
+  const calculator = new Calculator()
 
   const updateDisplay = (): void => {
     displayEl.textContent = calculator.getCurrent() ? calculator.getCurrent().toString() : '0'
@@ -75,7 +81,8 @@ const DOM_EVENTS = (() => {
 
   const formatDisplay = (input: string): string => {
     let value: string
-    if (awaitingOperator) {
+
+    if (calculator.getAwaitingOperator()) {
       value =
         calculator.getDisplay() === '0'
           ? input === '.'
@@ -108,27 +115,26 @@ const DOM_EVENTS = (() => {
   }
 
   const numberInput = (input: string): void => {
-    console.log('Numbers', calculator.getCurrent(), calculator.getPrevious())
     if (input === '.' && calculator.getDisplay().includes('.')) return
-    if (awaitingOperator) {
+    if (calculator.getAwaitingOperator()) {
       calculator.setCurrent(formatDisplay(input))
       calculator.setDisplay(formatDisplay(input))
     } else {
       console.log(calculator.getCurrent())
       calculator.setCurrent(formatDisplay(input))
       calculator.setDisplay(calculator.getCurrent().toString())
-      awaitingOperator = true
+      calculator.setAwaitingOperator(true)
     }
     updateDisplay()
   }
 
   const operatorInput = (input: string): void => {
-    awaitingOperator && calculate()
+    calculator.getAwaitingOperator() && calculate()
     updateDisplay()
     calculator.setOperation(input)
     calculator.setPrevious()
     calculator.setCurrent(null)
-    awaitingOperator = false
+    calculator.setAwaitingOperator(false)
   }
 
   digits.forEach(digit => {
@@ -150,6 +156,16 @@ const DOM_EVENTS = (() => {
 
   clearBtn.addEventListener('click', (): void => {
     calculator.reset()
+    updateDisplay()
+  })
+
+  negOrPos.addEventListener('click', (): void => {
+    calculator.setCurrent(
+      calculator.getCurrent() > 0
+        ? -Math.abs(+calculator.getCurrent())
+        : Math.abs(+calculator.getCurrent())
+    )
+    calculator.setDisplay(calculator.getCurrent().toString())
     updateDisplay()
   })
 })()

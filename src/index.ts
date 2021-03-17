@@ -102,6 +102,7 @@ const DOM_EVENTS = (() => {
         return
     }
     resetPrevious()
+    updateDisplay()
   }
 
   const numberInput = (input: string): void => {
@@ -119,7 +120,6 @@ const DOM_EVENTS = (() => {
 
   const operatorInput = (input: string): void => {
     getAwaitingOperator() && calculate()
-    updateDisplay()
     setOperation(input)
     setPrevious()
     setCurrentNumber(null)
@@ -186,7 +186,6 @@ operators.forEach(operator => {
 
 equals.addEventListener('click', (): void => {
   calculate()
-  updateDisplay()
 })
 
 clearBtn.addEventListener('click', (): void => {

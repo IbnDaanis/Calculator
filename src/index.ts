@@ -55,8 +55,6 @@ const DOM_EVENTS = (() => {
   const percent: HTMLButtonElement = document.querySelector('[data-percent]')
   const displayEl: HTMLHeadingElement = document.querySelector('#displayText')
 
-  const calculator = new Calculator()
-
   const displaySize = () => {
     if (displayEl.textContent.length > 12) {
       displayEl.style.fontSize = '2.2rem'
@@ -70,106 +68,142 @@ const DOM_EVENTS = (() => {
   }
 
   const updateDisplay = (): void => {
-    displayEl.textContent = calculator.getCurrentNumber()
-      ? calculator.getCurrentNumber().toString()
-      : '0'
+    displayEl.textContent = getCurrentNumber() ? getCurrentNumber().toString() : '0'
     displaySize()
   }
 
   const formatDisplay = (input: string): string => {
     let value: string
 
-    if (calculator.getAwaitingOperator()) {
+    if (getAwaitingOperator()) {
       value =
-        calculator.getDisplayNumber() === '0'
-          ? input === '.'
-            ? '0.'
-            : input
-          : calculator.getDisplayNumber() + input
+        getDisplayNumber() === '0' ? (input === '.' ? '0.' : input) : getDisplayNumber() + input
     } else {
-      value = calculator.getCurrentNumber() ? calculator.getCurrentNumber() + input : input
+      value = getCurrentNumber() ? getCurrentNumber() + input : input
     }
     return value.toString()
   }
 
   const calculate = (): void => {
-    switch (calculator.getOperation()) {
+    switch (getOperation()) {
       case '/':
-        calculator.divide()
+        divide()
         break
       case '*':
-        calculator.multiply()
+        multiply()
         break
       case '+':
-        calculator.add()
+        add()
         break
       case '-':
-        calculator.subtract()
+        subtract()
         break
       default:
         return
     }
-    calculator.resetPrevious()
+    resetPrevious()
   }
 
   const numberInput = (input: string): void => {
-    if (input === '.' && calculator.getDisplayNumber().includes('.')) return
-    if (calculator.getAwaitingOperator()) {
-      calculator.setCurrentNumber(formatDisplay(input))
-      calculator.setDisplayNumber(formatDisplay(input))
+    if (input === '.' && getDisplayNumber().includes('.')) return
+    if (getAwaitingOperator()) {
+      setCurrentNumber(formatDisplay(input))
+      setDisplayNumber(formatDisplay(input))
     } else {
-      console.log(calculator.getCurrentNumber())
-      calculator.setCurrentNumber(formatDisplay(input))
-      calculator.setDisplayNumber(calculator.getCurrentNumber().toString())
-      calculator.setAwaitingOperator(true)
+      setCurrentNumber(formatDisplay(input))
+      setDisplayNumber(getCurrentNumber().toString())
+      setAwaitingOperator(true)
     }
     updateDisplay()
   }
 
   const operatorInput = (input: string): void => {
-    calculator.getAwaitingOperator() && calculate()
+    getAwaitingOperator() && calculate()
     updateDisplay()
-    calculator.setOperation(input)
-    calculator.setPrevious()
-    calculator.setCurrentNumber(null)
-    calculator.setAwaitingOperator(false)
+    setOperation(input)
+    setPrevious()
+    setCurrentNumber(null)
+    setAwaitingOperator(false)
   }
 
-  digits.forEach(digit => {
-    digit.addEventListener('click', () => {
-      numberInput(digit.value)
-    })
-  })
-
-  operators.forEach(operator => {
-    operator.addEventListener('click', (): void => {
-      operatorInput(operator.value)
-    })
-  })
-
-  equals.addEventListener('click', (): void => {
-    calculate()
-    updateDisplay()
-  })
-
-  clearBtn.addEventListener('click', (): void => {
-    calculator.reset()
-    updateDisplay()
-  })
-
-  negOrPos.addEventListener('click', (): void => {
-    calculator.setCurrentNumber(
-      calculator.getCurrentNumber() > 0
-        ? -Math.abs(+calculator.getCurrentNumber())
-        : Math.abs(+calculator.getCurrentNumber())
-    )
-    calculator.setDisplayNumber(calculator.getCurrentNumber().toString())
-    updateDisplay()
-  })
-
-  percent.addEventListener('click', (): void => {
-    calculator.setCurrentNumber(+calculator.getCurrentNumber() / 100)
-    calculator.setDisplayNumber(calculator.getCurrentNumber().toString())
-    updateDisplay()
-  })
+  return {
+    digits,
+    operators,
+    equals,
+    clearBtn,
+    negOrPos,
+    percent,
+    calculate,
+    numberInput,
+    operatorInput,
+    updateDisplay,
+  }
 })()
+
+const {
+  digits,
+  operators,
+  equals,
+  clearBtn,
+  negOrPos,
+  percent,
+  calculate,
+  numberInput,
+  operatorInput,
+  updateDisplay,
+} = DOM_EVENTS
+const calculator = new Calculator()
+
+const {
+  reset,
+  getDisplayNumber,
+  setDisplayNumber,
+  getCurrentNumber,
+  setCurrentNumber,
+  setPrevious,
+  resetPrevious,
+  setOperation,
+  getOperation,
+  getAwaitingOperator,
+  setAwaitingOperator,
+  divide,
+  multiply,
+  add,
+  subtract,
+} = calculator
+
+digits.forEach(digit => {
+  digit.addEventListener('click', () => {
+    numberInput(digit.value)
+  })
+})
+
+operators.forEach(operator => {
+  operator.addEventListener('click', (): void => {
+    operatorInput(operator.value)
+  })
+})
+
+equals.addEventListener('click', (): void => {
+  calculate()
+  updateDisplay()
+})
+
+clearBtn.addEventListener('click', (): void => {
+  reset()
+  updateDisplay()
+})
+
+negOrPos.addEventListener('click', (): void => {
+  setCurrentNumber(
+    getCurrentNumber() > 0 ? -Math.abs(+getCurrentNumber()) : Math.abs(+getCurrentNumber())
+  )
+  setDisplayNumber(getCurrentNumber().toString())
+  updateDisplay()
+})
+
+percent.addEventListener('click', (): void => {
+  setCurrentNumber(+getCurrentNumber() / 100)
+  setDisplayNumber(getCurrentNumber().toString())
+  updateDisplay()
+})

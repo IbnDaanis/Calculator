@@ -14,7 +14,6 @@ class Calculator {
   public getDisplay = (): string => this.display
 
   public setDisplay(input: string): void {
-    console.log('setDisplay', input)
     this.display = input
   }
 
@@ -86,7 +85,6 @@ const DOM_EVENTS = (() => {
     } else {
       value = calculator.getCurrent() ? calculator.getCurrent() + input : input
     }
-    console.log('formatDisplay: ', value)
     return value.toString()
   }
 
@@ -109,38 +107,45 @@ const DOM_EVENTS = (() => {
     }
   }
 
+  const numberInput = (input: string): void => {
+    console.log('Numbers', calculator.getCurrent(), calculator.getPrevious())
+    if (input === '.' && calculator.getDisplay().includes('.')) return
+    if (awaitingOperator) {
+      calculator.setCurrent(formatDisplay(input))
+      calculator.setDisplay(formatDisplay(input))
+    } else {
+      console.log(calculator.getCurrent())
+      calculator.setCurrent(formatDisplay(input))
+      calculator.setDisplay(calculator.getCurrent().toString())
+      awaitingOperator = true
+    }
+    updateDisplay()
+  }
+
+  const operatorInput = (input: string): void => {
+    awaitingOperator && calculate()
+    updateDisplay()
+    calculator.setOperation(input)
+    calculator.setPrevious()
+    calculator.setCurrent(null)
+    awaitingOperator = false
+  }
+
   digits.forEach(digit => {
     digit.addEventListener('click', () => {
-      console.log('Numbers', calculator.getCurrent(), calculator.getPrevious())
-      if (digit.value === '.' && calculator.getDisplay().includes('.')) return
-      if (awaitingOperator) {
-        calculator.setCurrent(formatDisplay(digit.value))
-        calculator.setDisplay(formatDisplay(digit.value))
-      } else {
-        console.log(calculator.getCurrent())
-        calculator.setCurrent(formatDisplay(digit.value))
-        calculator.setDisplay(calculator.getCurrent().toString())
-        awaitingOperator = true
-      }
-      updateDisplay()
+      numberInput(digit.value)
     })
   })
 
   operators.forEach(operator => {
     operator.addEventListener('click', (): void => {
-      awaitingOperator && calculate()
-      updateDisplay()
-      calculator.setOperation(operator.value)
-      calculator.setPrevious()
-      calculator.setCurrent(null)
-      awaitingOperator = false
+      operatorInput(operator.value)
     })
   })
 
   equals.addEventListener('click', (): void => {
     calculate()
     updateDisplay()
-    console.log('Equals', calculator.getCurrent(), calculator.getPrevious())
   })
 
   clearBtn.addEventListener('click', (): void => {

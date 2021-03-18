@@ -1,3 +1,5 @@
+import './styles/styles.scss'
+
 class Calculator {
   private displayNumber: string = '0'
   private currentNumber: number | string = ''
@@ -74,14 +76,14 @@ const DOM_EVENTS = (() => {
   const displayEl: HTMLHeadingElement = document.querySelector('#displayText')!
 
   const displaySize = () => {
-    // if (displayEl.textContent.length > 12) {
-    //   displayEl.style.fontSize = '2.2rem'
-    //   return
-    // }
-    // if (displayEl.textContent.length > 8) {
-    //   displayEl.style.fontSize = '3rem'
-    //   return
-    // }
+    if (displayEl?.textContent?.length || ''.length > 12) {
+      displayEl.style.fontSize = '2.2rem'
+      return
+    }
+    if (displayEl?.textContent?.length || ''.length > 8) {
+      displayEl.style.fontSize = '3rem'
+      return
+    }
     displayEl.style.fontSize = '4rem'
   }
 

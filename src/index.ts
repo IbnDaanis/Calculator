@@ -1,17 +1,15 @@
-import './styles/style.scss'
-
 class Calculator {
   private displayNumber: string = '0'
-  private currentNumber: number | string
-  private previousNumber: number | string
-  private operation: string
+  private currentNumber: number | string = ''
+  private previousNumber: number | string = ''
+  private operation: string = ''
   private awaitingOperator: boolean = true
 
   public reset = (): void => {
     this.displayNumber = '0'
-    this.currentNumber = null
-    this.previousNumber = null
-    this.operation = null
+    this.currentNumber = ''
+    this.previousNumber = ''
+    this.operation = ''
     this.awaitingOperator = true
   }
 
@@ -34,7 +32,7 @@ class Calculator {
   }
 
   public resetPrevious = (): void => {
-    this.previousNumber = null
+    this.previousNumber = ''
   }
 
   public setOperation = (input: string) => {
@@ -67,23 +65,23 @@ class Calculator {
 }
 
 const DOM_EVENTS = (() => {
-  const digits: NodeListOf<HTMLButtonElement> = document.querySelectorAll('[data-digit]')
-  const operators: NodeListOf<HTMLButtonElement> = document.querySelectorAll('[data-operator]')
-  const equals: HTMLButtonElement = document.querySelector('[data-equals]')
-  const clearBtn: HTMLButtonElement = document.querySelector('[data-clear]')
-  const negOrPos: HTMLButtonElement = document.querySelector('[data-negOrPos]')
-  const percent: HTMLButtonElement = document.querySelector('[data-percent]')
-  const displayEl: HTMLHeadingElement = document.querySelector('#displayText')
+  const digits: NodeListOf<HTMLButtonElement> = document.querySelectorAll('[data-digit]')!
+  const operators: NodeListOf<HTMLButtonElement> = document.querySelectorAll('[data-operator]')!
+  const equals: HTMLButtonElement = document.querySelector('[data-equals]')!
+  const clearBtn: HTMLButtonElement = document.querySelector('[data-clear]')!
+  const negOrPos: HTMLButtonElement = document.querySelector('[data-negOrPos]')!
+  const percent: HTMLButtonElement = document.querySelector('[data-percent]')!
+  const displayEl: HTMLHeadingElement = document.querySelector('#displayText')!
 
   const displaySize = () => {
-    if (displayEl.textContent.length > 12) {
-      displayEl.style.fontSize = '2.2rem'
-      return
-    }
-    if (displayEl.textContent.length > 8) {
-      displayEl.style.fontSize = '3rem'
-      return
-    }
+    // if (displayEl.textContent.length > 12) {
+    //   displayEl.style.fontSize = '2.2rem'
+    //   return
+    // }
+    // if (displayEl.textContent.length > 8) {
+    //   displayEl.style.fontSize = '3rem'
+    //   return
+    // }
     displayEl.style.fontSize = '4rem'
   }
 
@@ -142,7 +140,7 @@ const DOM_EVENTS = (() => {
     getAwaitingOperator() && calculate()
     setOperation(input)
     setPrevious()
-    setCurrentNumber(null)
+    setCurrentNumber('')
     setAwaitingOperator(false)
   }
 
@@ -234,9 +232,9 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
   const operatorReg: RegExp = /[*\/+\-]/g
 
   const key: string = e.key.toString()
-  const number: RegExpMatchArray = key.match(numberReg)
-  const operator: RegExpMatchArray = key.match(operatorReg)
-  const decimal: string = key === '.' && key
+  const number: RegExpMatchArray | null = key.match(numberReg)
+  const operator: RegExpMatchArray | null = key.match(operatorReg)
+  const decimal: string | boolean = key === '.' && key
 
   if (decimal) numberInput(decimal)
 
@@ -261,3 +259,4 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
     updateDisplay()
   }
 })
+export {}

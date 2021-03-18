@@ -10,4 +10,4 @@
 
 ## Preview:
 
-![Preview](./dist/images/preview.png)
+![Preview](./public/images/preview.png)

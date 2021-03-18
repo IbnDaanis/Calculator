@@ -17,33 +17,53 @@ class Calculator {
 
   public getDisplayNumber = (): string => this.displayNumber
 
-  public setDisplayNumber = (input: string) => (this.displayNumber = input)
+  public setDisplayNumber = (input: string) => {
+    this.displayNumber = input
+  }
 
   public getCurrentNumber = (): number | string => this.currentNumber
 
-  public setCurrentNumber = (input: number | string) => (this.currentNumber = input)
+  public setCurrentNumber = (input: number | string) => {
+    this.currentNumber = input
+  }
 
   public getPrevious = (): number | string => this.previousNumber
 
-  public setPrevious = () => (this.previousNumber = this.currentNumber)
+  public setPrevious = () => {
+    this.previousNumber = this.currentNumber
+  }
 
-  public resetPrevious = (): void => (this.previousNumber = null)
+  public resetPrevious = (): void => {
+    this.previousNumber = null
+  }
 
-  public setOperation = (input: string) => (this.operation = input)
+  public setOperation = (input: string) => {
+    this.operation = input
+  }
 
   public getOperation = (): string => this.operation
 
   public getAwaitingOperator = (): boolean => this.awaitingOperator
 
-  public setAwaitingOperator = (option: boolean) => (this.awaitingOperator = option)
+  public setAwaitingOperator = (option: boolean) => {
+    this.awaitingOperator = option
+  }
 
-  public divide = () => (this.currentNumber = +this.previousNumber / +this.currentNumber)
+  public divide = () => {
+    this.currentNumber = +this.previousNumber / +this.currentNumber
+  }
 
-  public multiply = () => (this.currentNumber = +this.previousNumber * +this.currentNumber)
+  public multiply = () => {
+    this.currentNumber = +this.previousNumber * +this.currentNumber
+  }
 
-  public add = () => (this.currentNumber = +this.previousNumber + +this.currentNumber)
+  public add = () => {
+    this.currentNumber = +this.previousNumber + +this.currentNumber
+  }
 
-  public subtract = () => (this.currentNumber = +this.previousNumber - +this.currentNumber)
+  public subtract = () => {
+    this.currentNumber = +this.previousNumber - +this.currentNumber
+  }
 }
 
 const DOM_EVENTS = (() => {

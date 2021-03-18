@@ -76,15 +76,14 @@ const DOM_EVENTS = (() => {
   const displayEl: HTMLHeadingElement = document.querySelector('#displayText')!
 
   const displaySize = () => {
-    if (displayEl?.textContent?.length || ''.length > 12) {
-      displayEl.style.fontSize = '2.2rem'
+    if (!displayEl.textContent) return
+    if (displayEl.textContent.length > 11) {
+      displayEl.style.fontSize = '2rem'
       return
-    }
-    if (displayEl?.textContent?.length || ''.length > 8) {
+    } else if (displayEl.textContent.length > 8) {
       displayEl.style.fontSize = '3rem'
       return
-    }
-    displayEl.style.fontSize = '4rem'
+    } else displayEl.style.fontSize = '4rem'
   }
 
   const updateDisplay = (): void => {

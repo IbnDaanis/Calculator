@@ -11,6 +11,8 @@
 body {
   background: #ef2d4f;
   height: 100vh;
+  overflow: hidden;
+
   @media (max-width: 600px) {
     overflow: hidden;
   }
@@ -38,6 +40,7 @@ body {
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
       @media (max-width: 600px) {
         height: 120px;
       }
@@ -48,29 +51,25 @@ body {
         text-align: right;
         width: 90%;
         height: fit-content;
-        padding-bottom: 1rem;
         overflow-x: auto;
         overflow-y: hidden;
-        /* width */
+
         &::-webkit-scrollbar {
           width: 10px;
           border-radius: 5000px;
           overflow: hidden;
         }
 
-        /* Track */
         &::-webkit-scrollbar-track {
           border-radius: 5000px;
           background: #691222;
         }
 
-        /* Handle */
         &::-webkit-scrollbar-thumb {
           border-radius: 5000px;
           background: #ee4564;
         }
 
-        /* Handle on hover */
         &::-webkit-scrollbar-thumb:hover {
           background: #ee4564;
         }

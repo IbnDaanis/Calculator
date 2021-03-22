@@ -17,7 +17,7 @@ class Calculator {
 
   public getDisplayNumber = (): string => this.displayNumber
 
-  public setDisplayNumber = (input: string) => {
+  public setDisplayNumber = (input: string): void => {
     this.displayNumber = input
   }
 
@@ -29,7 +29,7 @@ class Calculator {
 
   public getPrevious = (): number | string => this.previousNumber
 
-  public setPrevious = () => {
+  public setPrevious = (): void => {
     this.previousNumber = this.currentNumber
   }
 
@@ -37,7 +37,7 @@ class Calculator {
     this.previousNumber = ''
   }
 
-  public setOperation = (input: string) => {
+  public setOperation = (input: string): void => {
     this.operation = input
   }
 
@@ -45,23 +45,23 @@ class Calculator {
 
   public getAwaitingOperator = (): boolean => this.awaitingOperator
 
-  public setAwaitingOperator = (option: boolean) => {
+  public setAwaitingOperator = (option: boolean): void => {
     this.awaitingOperator = option
   }
 
-  public divide = () => {
+  public divide = (): void => {
     this.currentNumber = +this.previousNumber / +this.currentNumber
   }
 
-  public multiply = () => {
+  public multiply = (): void => {
     this.currentNumber = +this.previousNumber * +this.currentNumber
   }
 
-  public add = () => {
+  public add = (): void => {
     this.currentNumber = +this.previousNumber + +this.currentNumber
   }
 
-  public subtract = () => {
+  public subtract = (): void => {
     this.currentNumber = +this.previousNumber - +this.currentNumber
   }
 }
@@ -260,4 +260,5 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
     updateDisplay()
   }
 })
+
 export {}

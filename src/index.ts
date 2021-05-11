@@ -75,7 +75,7 @@ const DOM_EVENTS = (() => {
   const percent: HTMLButtonElement = document.querySelector('[data-percent]')!
   const displayEl: HTMLHeadingElement = document.querySelector('#displayText')!
 
-  const displaySize = () => {
+  const displaySize = (): void => {
     if (!displayEl.textContent) return
     if (displayEl.textContent.length > 11) {
       displayEl.style.fontSize = '2rem'
@@ -155,7 +155,7 @@ const DOM_EVENTS = (() => {
     calculate,
     numberInput,
     operatorInput,
-    updateDisplay,
+    updateDisplay
   }
 })()
 
@@ -169,7 +169,7 @@ const {
   calculate,
   numberInput,
   operatorInput,
-  updateDisplay,
+  updateDisplay
 } = DOM_EVENTS
 const calculator = new Calculator()
 
@@ -188,16 +188,16 @@ const {
   divide,
   multiply,
   add,
-  subtract,
+  subtract
 } = calculator
 
-digits.forEach(digit => {
+digits.forEach((digit: HTMLButtonElement) => {
   digit.addEventListener('click', () => {
     numberInput(digit.value)
   })
 })
 
-operators.forEach(operator => {
+operators.forEach((operator: HTMLButtonElement) => {
   operator.addEventListener('click', (): void => {
     operatorInput(operator.value)
   })
@@ -226,13 +226,13 @@ percent.addEventListener('click', (): void => {
   updateDisplay()
 })
 
-document.addEventListener('keydown', (e: KeyboardEvent): void => {
-  if (e.key === 'F12') return
+document.addEventListener('keydown', (event: KeyboardEvent): void => {
+  if (event.key === 'F12') return
 
   const numberReg: RegExp = /[\d]/g
   const operatorReg: RegExp = /[*\/+\-]/g
 
-  const key: string = e.key.toString()
+  const key: string = event.key.toString()
   const number: RegExpMatchArray | null = key.match(numberReg)
   const operator: RegExpMatchArray | null = key.match(operatorReg)
   const decimal: string | boolean = key === '.' && key
@@ -254,7 +254,7 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
     updateDisplay()
   }
 
-  if (e.key === '%') {
+  if (event.key === '%') {
     setCurrentNumber(+getCurrentNumber() / 100)
     setDisplayNumber(getCurrentNumber().toString())
     updateDisplay()
